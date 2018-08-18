@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+   
+
+
+
+
+
+        <item
+            android:id="@+id/notifications"
+            android:title="@string/notifications"
+            android:icon="@drawable/notification"
+            />
+        <item
+            android:id="@+id/user_profile"
+            android:title="@string/user_profile"
+            android:icon="@drawable/profile_icon"/>
+
+        <item
+            android:id="@+id/my_friends"
+            android:title="@string/my_fiends"
+            android:icon="@drawable/my_friends"
+
+
+
+            />
+        <item
+            android:id="@+id/find_friends"
+            android:title="@string/find_friends"
+            android:icon="@drawable/find_friend"
+
+
+            />
+        <item
+            android:id="@+id/track_friends"
+            android:title="@string/track_friends"
+            android:icon="@drawable/track_friends"/>
+        <item
+            android:id="@+id/tracking_you"
+            android:title="@string/tracking_you"
+            android:icon="@drawable/tracking_you"
+
+
+            />
+        <item
+            android:id="@+id/rate"
+            android:title="@string/rate"
+            android:icon="@drawable/rate"
+            />
+        <item
+            android:id="@+id/share"
+            android:title="@string/share"
+            android:icon="@drawable/share"
+
+
+            />
+        <item
+            android:id="@+id/help"
+            android:title="@string/help"
+            android:icon="@drawable/help"
+
+
+            />
+        <item
+            android:id="@+id/about"
+            android:title="About"
+            android:icon="@drawable/about"
+            />
+    </group>
+
+
+
+</menu>
