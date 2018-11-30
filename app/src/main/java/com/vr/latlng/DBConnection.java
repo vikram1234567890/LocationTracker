@@ -1,16 +1,9 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LevelListDrawable;
-import android.media.Image;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,13 +13,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -57,26 +48,24 @@ public class DBConnection   implements Serializable {
     private DatabaseReference mFirebaseDatabase, tempFirebaseDatabase, friendFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
 
-    protected static Marker marker;
-    protected static Marker friend_marker;
+    static Marker marker;
+    static Marker friend_marker;
     private GoogleMap mMap;
     private FirebaseAuth mAuth;
     private LatLng my_latLng;
     private FirebaseUser currentUser;
     private Query query;
     private Context context;
-    private AlertDialog alertDialog;
-    PopupWindow popupWindow;
-    View popupView;
-    int mCurrentX, mCurrentY;
+    private PopupWindow popupWindow;
+    private View popupView;
+    private int mCurrentX, mCurrentY;
     private LinearLayout maps_layout;
     protected static ImageView popupProfile;
     private static TextView popupUserName, popupUserDistance;
-    private Bitmap bitmap;
     private boolean popupWindowShown;
     private boolean my_zoom_once,friend_zoom_once;
-     static Bitmap myBitmap,friendBitmap;
-    protected void startDb() {
+     static Bitmap myBitmap;
+    void startDb() {
 
 
         // get reference to 'users' node
@@ -85,7 +74,7 @@ public class DBConnection   implements Serializable {
 
     }
 
-    public DBConnection() {
+    DBConnection() {
         context = Variables.context;
         friend_marker = null;
         popupProfile=null;
@@ -96,13 +85,15 @@ public class DBConnection   implements Serializable {
         mMap = Variables.mMap;
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            public Marker marker;
+
             @Override
             public boolean onMarkerClick(Marker marker) {
                 if (marker.equals(friend_marker)) {
                     friend_marker.showInfoWindow();
                     showDistance();
-                }else if (marker.equals(DBConnection.this.marker)){
-                    DBConnection.this.marker.showInfoWindow();
+                }else if (marker.equals(this.marker)){
+                    this.marker.showInfoWindow();
                 }
                 return true;
             }
@@ -192,7 +183,7 @@ public class DBConnection   implements Serializable {
             popupWindowShown = true;
         }
     }
-    void distanceoOnPopup(){
+    private void distanceoOnPopup(){
 
         if (popupUserDistance!=null) {
             StackTraceElement stackTraceElement[]= Thread.currentThread().getStackTrace();
@@ -271,7 +262,7 @@ try {
             public void onDataChange(final DataSnapshot dataSnapshot) {
 
 
-                new UploadDownloadImages().download(Variables.user_key + ".png", "user", null);
+                new UploadDownloadImages().download(Variables.user_key + ".png", "user", null, null , 0);
 
             }
 
@@ -289,40 +280,42 @@ try {
         mFirebaseDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                        Variables.currentLatitude = dataSnapshot.child(context.getResources().getString(R.string.lat)).getValue(String.class);
-                        Variables.currentLongitude = dataSnapshot.child(context.getResources().getString(R.string.lng)).getValue(String.class);
+                Variables.currentLatitude = dataSnapshot.child(context.getResources().getString(R.string.lat)).getValue(String.class);
+                Variables.currentLongitude = dataSnapshot.child(context.getResources().getString(R.string.lng)).getValue(String.class);
 
 
-            if (marker != null) {
-                marker.remove();
+                if (marker != null) {
+                    marker.remove();
 
+                }
+                if (Variables.currentLatitude != null && Variables.currentLongitude != null) {
+                    my_latLng = new LatLng(Double.parseDouble(Variables.currentLatitude), Double.parseDouble(Variables.currentLongitude));
+                }
+                Variables.myLatLng = my_latLng;
+                if (Variables.myLatLng != null) {
+                    if (!my_zoom_once) {
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(my_latLng));
+                        my_zoom_once = true;
+                    }
+
+                    marker = mMap.addMarker(new MarkerOptions().position(my_latLng));
+
+
+                    // Showing the current location in Google Map
+                    // mMap.moveCamera(CameraUpdateFactory.newLatLng(my_latLng));
+                    // mMap.animateCamarkerra(CamarkerraUpdateFactory.newLatLngZoom(my_latLng, 15));
+                    marker.setPosition(my_latLng);
+                    marker.setTitle("YOU");
+                    if (myBitmap != null) {
+                        marker.setIcon(BitmapDescriptorFactory.fromBitmap(new CommonMethods().getCustomMapMarker(myBitmap)));
+                    }
+                    if (!marker.isInfoWindowShown()) {
+                        marker.showInfoWindow();
+                    }
+
+                    distanceoOnPopup();
+                }
             }
-                my_latLng = new LatLng(Double.parseDouble(Variables.currentLatitude), Double.parseDouble(Variables.currentLongitude));
-
-            Variables.myLatLng = my_latLng;
-            if (!my_zoom_once) {
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(my_latLng));
-                my_zoom_once = true;
-            }
-
-            marker = mMap.addMarker(new MarkerOptions().position(my_latLng));
-
-
-            // Showing the current location in Google Map
-            // mMap.moveCamera(CameraUpdateFactory.newLatLng(my_latLng));
-            // mMap.animateCamarkerra(CamarkerraUpdateFactory.newLatLngZoom(my_latLng, 15));
-            marker.setPosition(my_latLng);
-            marker.setTitle("YOU");
-            if (myBitmap!=null){
-                marker.setIcon(BitmapDescriptorFactory.fromBitmap(new CommonMethods().getCustomMapMarker(myBitmap)));
-            }
-            if (!marker.isInfoWindowShown()) {
-                marker.showInfoWindow();
-            }
-
-            distanceoOnPopup();
-            }
-
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
@@ -333,7 +326,7 @@ try {
 
     }
 
-    protected void friendTrack() {
+    void friendTrack() {
         if (!Variables.NO_RATE &&  new CommonMethods().getSharedPref(context.getResources().getString(R.string.rate),context.getResources().getString(R.string.app_name)).equals("") ) {
             new CommonMethods().rateMessage();
         }
@@ -422,9 +415,8 @@ try {
 
                                         Variables.friend_name = dataSnapshot.child(context.getResources().getString(R.string.name)).getValue(String.class);
 
-                                        new UploadDownloadImages().download(Variables.friend_key + ".png", "friend", null);
+                                        new UploadDownloadImages().download(Variables.friend_key + ".png", "friend", null,null,0);
                                         popupUserName.setText(Variables.friend_name);
-                                        friend_marker.setTitle(Variables.friend_name);
                                         friend_marker.setTitle(Variables.friend_name);
 
                                         if (!friend_marker.isInfoWindowShown()) {
@@ -445,15 +437,24 @@ try {
                                 // mMap.moveCamera(CameraUpdateFactory.newLatLng(my_latLng));
                                 // mMap.animateCamarkerra(CamarkerraUpdateFactory.newLatLngZoom(my_latLng, 15));
                                 friend_marker.setPosition(my_latLng);
+                             /*   LatLng origin = Variables.myLatLng;
+                                LatLng dest = Variables.friendLatLng;
+                                GetDirection getDirection=new GetDirection();
+                                // Getting URL to the Google Directions API
+                                String url = getDirection.getDirectionsUrl(origin, dest);
 
-                                progressDialog.dismiss();
+                                GetDirection.DownloadTask downloadTask =getDirection.new DownloadTask();
+
+                                // Start downloading json data from Google Directions API
+                                downloadTask.execute(url);
+                          */      progressDialog.dismiss();
 
                           /*      if (!Variables.start_tracking) {
                                     friendFirebaseDatabase.removeEventListener(this);
 
                                 }*/
                                 showDistance();
-                               distanceoOnPopup();
+                               //distanceoOnPopup();
         if (!Variables.start_tracking){
             friendFirebaseDatabase.removeEventListener(this);
 
@@ -493,10 +494,11 @@ try {
         toast.show();
     }
 
-    protected void updateUser(String lat, String lng) {
-        mFirebaseDatabase = mFirebaseInstance.getReference(context.getResources().getString(R.string.users_locations));
+    void updateUser(String lat, String lng) {
+        if (lat!=null && lng!=null && Variables.user_key!=null) {
+            mFirebaseDatabase = mFirebaseInstance.getReference(context.getResources().getString(R.string.users_locations));
 
-        Map<String, String> data = new HashMap<>();
+            Map<String, String> data = new HashMap<>();
 
             data.put(context.getResources().getString(R.string.lat), lat);
             data.put(context.getResources().getString(R.string.lng), lng);
@@ -506,7 +508,7 @@ try {
 
             //  mFirebaseDatabase.child("lng").setValue(data);
 
-
+        }
 
     }
 

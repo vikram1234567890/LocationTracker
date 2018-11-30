@@ -1,6 +1,5 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
-import android.*;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -10,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -31,12 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserProfile extends AppCompatActivity {
 
@@ -84,14 +78,33 @@ public class UserProfile extends AppCompatActivity {
         mFirebaseDatabase.child(Variables.user_key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    name.setText(dataSnapshot.child(getResources().getString(R.string.name)).getValue(String.class));
-                    mob_no.setText(dataSnapshot.child(getResources().getString(R.string.phone_no)).getValue(String.class));
-                    email.setText(dataSnapshot.child(getResources().getString(R.string.user_email)).getValue(String.class));
-                    date.setText(DateFormat.format(getString(R.string.date_format),new Date(Long.parseLong(dataSnapshot.child(getResources().getString(R.string.date)).getValue(String.class))).getTime()));
-                    progressDialog.dismiss();
+               String s_name,s_mob,s_email,s_date;
+                if (dataSnapshot.exists()) {
+                    s_name = dataSnapshot.child(getResources().getString(R.string.name)).getValue(String.class);
+                    s_mob = dataSnapshot.child(getResources().getString(R.string.phone_no)).getValue(String.class);
+                    s_email = dataSnapshot.child(getResources().getString(R.string.user_email)).getValue(String.class);
+                    s_date = dataSnapshot.child(getResources().getString(R.string.date)).getValue(String.class);
+                    if (s_name != null) {
+                        name.setText(s_name);
+                    }
+                    if (s_mob != null) {
+                        mob_no.setText(s_mob);
 
-                    new UploadDownloadImages(progressBar).download(Variables.user_key+getString(R.string.png),getString(R.string.profile),profile_image);
-            }
+                    }
+                    if (s_email != null) {
+                        email.setText(s_email);
+
+                    }
+                    if (s_date != null) {
+                        date.setText(DateFormat.format(getString(R.string.date_format), new Date(Long.parseLong(s_date)).getTime()));
+
+                    }
+                    new UploadDownloadImages(progressBar).download(Variables.user_key+getString(R.string.png),getString(R.string.profile),profile_image,null,0);
+
+                }
+                      progressDialog.dismiss();
+
+                               }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {

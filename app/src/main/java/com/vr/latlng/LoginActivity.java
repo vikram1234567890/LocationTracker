@@ -1,7 +1,5 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
-import android.*;
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -9,19 +7,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,20 +27,16 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -61,11 +50,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
-
-import static com.vr.locationtracker.Variables.context;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -85,14 +71,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context=this;
+        Variables.context=this;
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Signing in...");
         progressDialog.setCancelable(false);
         new Variables();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-        context=getApplicationContext();
+        Variables.context=getApplicationContext();
         setContentView(R.layout.activity_login);
         privacy_accept=findViewById(R.id.privacy_accept);
         privacy_accept.setMovementMethod(LinkMovementMethod.getInstance());
@@ -251,7 +237,7 @@ progressDialog.show();
                 try {
                     callbackManager.onActivityResult(requestCode, resultCode, data);
                 }catch (Exception e){
-                  //  Toast.makeText(getApplicationContext(),"Turn on GPS and try again!!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Facebook login error",Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -333,9 +319,9 @@ progressDialog.show();
                   AccessToken accessToken = AccessToken.getCurrentAccessToken();
                   boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
                   if (mAuth!=null) {
-                      Intent intent=new Intent(context, LocationService.class);
+                      Intent intent=new Intent(Variables.context, LocationService.class);
                       intent.putExtra(getResources().getString(R.string.tag),"initial");
-                      context.startService(intent);
+                      Variables.context.startService(intent);
 
 
                   }else
@@ -403,7 +389,7 @@ progressDialog.show();
     public void onStart() {
         super.onStart();
 
-        context=this;
+        Variables.context=this;
         user = mAuth.getCurrentUser();
 
         updateUI(user,this);

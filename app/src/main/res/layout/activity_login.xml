@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context="com.vr.locationtracker.LoginActivity">
+    tools:context="com.vr.latlng.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

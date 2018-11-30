@@ -1,4 +1,4 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -8,21 +8,15 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-
-import static com.vr.locationtracker.Variables.context;
-import static com.vr.locationtracker.Variables.start_tracking;
 
 public class LocationService extends Service  implements   GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -49,7 +43,7 @@ public class LocationService extends Service  implements   GoogleApiClient.Conne
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         data=intent.getStringExtra(getResources().getString(R.string.tag));
-        progressDialog= new ProgressDialog(context);
+        progressDialog= new ProgressDialog(Variables.context);
         progressDialog.setMessage("Please wait...");
         progressDialog.setCancelable(false);
         progressDialog.show();

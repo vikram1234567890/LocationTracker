@@ -1,26 +1,15 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -29,22 +18,15 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -52,8 +34,6 @@ import java.util.Date;
  */
 
 public class UploadDownloadImages   {
-    private  FirebaseDatabase mFirebaseInstance;
-    private DatabaseReference mFirebaseDatabase;
 
     Context context;
 Activity activity;
@@ -69,9 +49,6 @@ Activity activity;
         storage=FirebaseStorage.getInstance();
         progressDialog=new ProgressDialog(activity);
         progressDialog.setCancelable(false);
-        mFirebaseInstance = FirebaseDatabase.getInstance();
-
-        mFirebaseDatabase = mFirebaseInstance.getReference(context.getResources().getString(R.string.users));
 
 
     }
@@ -179,7 +156,7 @@ Activity activity;
 
     }
 
-void download(String image_name, final String tag, final ImageView imageView){
+void download(final String image_name, final String tag, final ImageView imageView, final ArrayList<list_item> arrayList, final int position){
     // Create a storage reference from our app
     StorageReference storageRef = storage.getReference();
     StorageReference storageReference = storageRef.child(image_name);
@@ -220,10 +197,15 @@ try {
 
 
             }else  if (tag.equals("recycleview")) {
-                         imageView.setImageBitmap( bitmap);
 
-            }
+                if(arrayList.get(position).profilePic==null) {
+                    arrayList.get(position).profilePic = bitmap;
+                    imageView.setImageBitmap(bitmap);
+                }
+
+             }
             }catch (Exception e){
+
 
             }
                      }
@@ -233,8 +215,12 @@ try {
         public void onFailure(@NonNull Exception exception) {
             // Handle any errors
             try {
+                if(arrayList.get(position).profilePic==null) {
 
-
+                    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.profile_icon);
+                    arrayList.get(position).profilePic = bitmap;
+                    imageView.setImageBitmap(bitmap);
+                }
                 progressBar.setVisibility(View.GONE);
             }catch (Exception e){
 

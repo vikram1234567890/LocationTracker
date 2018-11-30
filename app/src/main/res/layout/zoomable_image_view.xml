@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.vr.locationtracker.ZoomableImageView
+    <com.vr.latlng.ZoomableImageView
         android:id="@+id/zoom_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

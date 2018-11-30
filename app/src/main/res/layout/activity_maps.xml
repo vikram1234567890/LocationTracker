@@ -34,7 +34,7 @@
 
                     map:cameraTargetLat="20"
                     map:cameraTargetLng="76"
-                    tools:context="com.vr.locationtracker.MapsActivity" />
+                    tools:context="com.vr.latlng.MapsActivity" />
             </LinearLayout>
         </FrameLayout>
         <FrameLayout

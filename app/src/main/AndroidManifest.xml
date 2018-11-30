@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.vr.locationtracker">
+    package="com.vr.latlng">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -64,23 +64,23 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="com.vr.latlng.MapsActivity"
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".LocationService"
+            android:name="com.vr.latlng.LocationService"
             android:enabled="true"
             android:exported="true" />
 
         <activity
-            android:name=".RecycleViewLayout"
+            android:name="com.vr.latlng.RecycleViewLayout"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".UserProfile"
+            android:name="com.vr.latlng.UserProfile"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.vr.latlng.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -90,11 +90,11 @@
         </activity>
 
         <service
-            android:name=".BackgroundService"
+            android:name="com.vr.latlng.BackgroundService"
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".ListenerService"
+            android:name="com.vr.latlng.ListenerService"
             android:enabled="true"
             android:exported="true"/>
     </application>

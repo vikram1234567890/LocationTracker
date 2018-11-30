@@ -1,4 +1,4 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "687597031022",
-    "firebase_url": "https://locationtracker-5d7ca.firebaseio.com",
-    "project_id": "locationtracker-5d7ca",
-    "storage_bucket": "locationtracker-5d7ca.appspot.com"
+    "project_number": "863912910057",
+    "firebase_url": "https://latlng-1535481474030.firebaseio.com",
+    "project_id": "latlng-1535481474030",
+    "storage_bucket": "latlng-1535481474030.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:687597031022:android:2ef0a6e1597c8f07",
+        "mobilesdk_app_id": "1:863912910057:android:90b56279331d5fe5",
         "android_client_info": {
-          "package_name": "com.vr.locationtracker"
+          "package_name": "com.vr.latlng"
         }
       },
       "oauth_client": [
         {
-          "client_id": "687597031022-nicp647ae149nj5chgla86raqo1bd7aa.apps.googleusercontent.com",
+          "client_id": "863912910057-si5s3r4snp7s0m9dp1ldl58nvoh36dqk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.vr.locationtracker",
-            "certificate_hash": "038f6984db65bf7ef87cc891b0f943c667b95b8c"
+            "package_name": "com.vr.latlng",
+            "certificate_hash": "de081cf457f29cf16189c02e7147bcccb2f30530"
           }
         },
         {
-          "client_id": "687597031022-9cm6juui41qhqp62qik2ph0dquvstpo5.apps.googleusercontent.com",
+          "client_id": "863912910057-iidc9sr74tp98rhsvnisnjv46ab86u6h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCXzZybDMz_hRQZQgK57sW14PWwHvvB7LQ"
+          "current_key": "AIzaSyC5K2-URgSgK510qoAq50cIfbJ7v4tImy8"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "687597031022-9cm6juui41qhqp62qik2ph0dquvstpo5.apps.googleusercontent.com",
+              "client_id": "863912910057-iidc9sr74tp98rhsvnisnjv46ab86u6h.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Location Tracker</string>
+    <string name="app_name">LatLng</string>
     <string name="title_activity_maps">Map</string>
     <string name="permission_denied_location">Location access  required</string>
     <string name="permission_denied_camera">Permission required to access camera</string>
@@ -54,8 +54,8 @@
     <string name="permission_rationale">"Contacts permission are needed for providing email
         completions."
     </string>
-    <string name="facebook_app_id">236874257036483</string>
-    <string name="fb_login_protocol_scheme">fb236874257036483</string>
+    <string name="facebook_app_id">591669344582165</string>
+    <string name="fb_login_protocol_scheme">fb591669344582165</string>
     <string name="request_to">request_to</string>
     <string name="you_tracking_user">you_tracking_user</string>
     <string name="user_tracking_me">user_tracking_me</string>
@@ -69,12 +69,12 @@
     <string name="joined_on">Joined On</string>
     <string name="sent_on">Sent On</string>
     <string name="tracking_since">Tracking Since</string>
-    <string name="privacy_url">By registering,you agree to our <a href="https://firebasestorage.googleapis.com/v0/b/locationtracker-5d7ca.appspot.com/o/privacy_policy.html?alt=media&amp;token=f58dc9f4-cd39-4749-9ca1-a695daba648e" >Privacy Policy</a></string>
+    <string name="privacy_url">By registering,you agree to our <a href="https://vikram1234567890.github.io/privacy_policy.html" >Privacy Policy</a></string>
     <string name="profile">profile</string>
     <string name="png">.png</string>
     <string name="date_format">dd-MM-yyyy (HH:mm:ss)</string>
     <string name="rate">Rate</string>
-    <string name="tutorial">Follow below steps to start tracking your friends.\n\nStep 1:Go to \"Find Friends\" and send friend request to your friend(s).\n\nStep 2:Once your friend accepts your friend request from his/her \"Notification\" then you have to go to \"Track Friends\" and start tracking.\n\nNote:Your friend needs to keep this app open so his/her name could apppear in \"Track Friends\" list</string>
+    <string name="tutorial">Follow below steps to locate your friends.\n\nStep 1:Go to \"Find Friends\" and send friend request to your friend(s).\n\nStep 2:Once your friend accepts your friend request from his/her \"Notification\" then you have to go to \"Track Friends\" and start tracking.\n\nNote:Your friend needs to keep this app open so his/her name could apppear in \"Track Friends\" list.\nIf friend does not appear in \"Track Friends\" list just tell friend to close and restart the app</string>
     <string name="help">Help</string>
     <string name="admob_app_id">ca-app-pub-1211635675454735~4806294656</string>
     <string name="version_code">version_code</string>

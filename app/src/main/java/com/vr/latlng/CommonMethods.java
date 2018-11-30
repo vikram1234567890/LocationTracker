@@ -1,4 +1,4 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -25,7 +25,10 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RatingBar;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -214,7 +217,7 @@ public class CommonMethods {
     protected void shareMessage(){
         final CharSequence[] items = { "Share", "Never :(",
                 "Later" };
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder = new AlertDialog.Builder(context);
         builder.setTitle("Share and track more friends");
       //  builder.setMessage("Track more users!!!Share this app now :)");
 
@@ -247,36 +250,49 @@ public class CommonMethods {
 
     }
     protected void rateMessage(){
-        final CharSequence[] items = { "Rate now", "Never :(",
-                "Later" };
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Love this app!!!");
-       // builder.setMessage("Take a second to rate this app on play store");
 
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView= inflater.inflate(R.layout.rate_layout, null);
+        builder.setView(dialogView);
+
+        final RatingBar ratingBar=dialogView.findViewById(R.id.rate);
+        Button never=dialogView.findViewById(R.id.never);
+        Button later=dialogView.findViewById(R.id.later);
+        ratingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(DialogInterface dialog, int item) {
+            public boolean onTouch(View view, MotionEvent motionEvent) {
 
-                if (items[item].equals("Rate now")) {
-                    rate();
-                    dialog.dismiss();
-                    changeSharedPref(context.getResources().getString(R.string.rate),"1",context.getResources().getString(R.string.app_name));
+                rate();
+                alertDialog.dismiss();
+                changeSharedPref(context.getResources().getString(R.string.rate),"1",context.getResources().getString(R.string.app_name));
 
-                }else
-                if (items[item].equals("Never :(")) {
-                    changeSharedPref(context.getResources().getString(R.string.rate),"1",context.getResources().getString(R.string.app_name));
-
-                    dialog.dismiss();
-
-
-                } else if (items[item].equals("Later")) {
-                    Variables.NO_RATE=true;
-                    dialog.dismiss();
-
-                }
+                return true;
             }
         });
-        builder.show();
+        never.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeSharedPref(context.getResources().getString(R.string.rate),"1",context.getResources().getString(R.string.app_name));
+
+                alertDialog.dismiss();
+
+            }
+        });
+        later.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Variables.NO_RATE=true;
+                alertDialog.dismiss();
+
+            }
+        });
+        alertDialog = builder.setCancelable(false).create();
+        alertDialog.show();
+
+
+
+
 
 
 
@@ -292,7 +308,7 @@ public class CommonMethods {
     protected void share(){
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Hey,This app let's you track anyone from anywhere.Give it a try now.\nhttps://play.google.com/store/apps/details?id=" + context.getPackageName());
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Hey,This app let's you locate your friends.Give it a try now.\nhttps://play.google.com/store/apps/details?id=" + context.getPackageName());
         sendIntent.setType("text/plain");
         context.startActivity(sendIntent);
     }

@@ -1,10 +1,9 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -27,15 +25,6 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -50,27 +39,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
-
-    private GoogleMap mMap;
 
     private Marker now;
     private double i;
 Toolbar toolbar;
-           private NavigationView navigationView;
-    private GoogleSignInClient mGoogleSignInClient;
     private AlertDialog.Builder alertDialogbuilder;
     private AlertDialog alertDialog;
     private boolean backPressed=false;
+    @SuppressLint("StaticFieldLeak")
     protected static LinearLayout maps_layout;
-    private   DrawerLayout drawer;
-    private DatabaseReference tempFirebaseDatabase;
-    private Query query;
-    private FirebaseDatabase mFirebaseInstance;
 
-    private int REQUEST_CHECK_SETTINGS=105;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +64,7 @@ Toolbar toolbar;
 
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -94,7 +73,7 @@ Toolbar toolbar;
         toggle.syncState();
 
 
-        navigationView =  findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
         maps_layout=findViewById(R.id.maps_layout);
@@ -116,21 +95,21 @@ Toolbar toolbar;
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        GoogleMap mMap = googleMap;
 
-        Variables.mMap=mMap;
+        Variables.mMap= mMap;
         if (Variables.user_key!=null) {
             new LocationService().mapReady();
         }
-        if (Variables.start_tracking){
+        if (Variables.start_tracking && Variables.myLatLng!=null){
 
 
            new LocationService().friendTrack();
         }else {
-            mFirebaseInstance = FirebaseDatabase.getInstance();
+            FirebaseDatabase mFirebaseInstance = FirebaseDatabase.getInstance();
 
-            tempFirebaseDatabase = mFirebaseInstance.getReference(getResources().getString(R.string.you_tracking_user)).child(Variables.user_key);
-            query = tempFirebaseDatabase.orderByChild(getResources().getString(R.string.track_to));
+            DatabaseReference tempFirebaseDatabase = mFirebaseInstance.getReference(getResources().getString(R.string.you_tracking_user)).child(Variables.user_key);
+            Query query = tempFirebaseDatabase.orderByChild(getResources().getString(R.string.track_to));
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -167,7 +146,7 @@ Toolbar toolbar;
                            .requestEmail()
                            .build();
 // Build a GoogleSignInClient with the options specified by gso.
-                   mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+                   GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
                    mGoogleSignInClient.signOut()
                            .addOnCompleteListener(this, new OnCompleteListener<Void>() {

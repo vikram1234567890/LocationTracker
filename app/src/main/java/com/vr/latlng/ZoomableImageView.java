@@ -1,4 +1,4 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
 /**
  * Created by Admin on 8/5/2018.

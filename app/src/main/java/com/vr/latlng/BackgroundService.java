@@ -1,16 +1,12 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,8 +20,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
-
 public class BackgroundService extends Service {
     private  FirebaseUser currentUser;
     private  FirebaseAuth mAuth;
@@ -34,13 +28,6 @@ public class BackgroundService extends Service {
     private DatabaseReference mFirebaseDatabase;
     private Query query;
 
-    public BackgroundService() {
-
-
-
-
-
-    }
     protected void changeSharedPref(String key, String value, String shared_pref_name)
     {
 
@@ -114,24 +101,21 @@ public class BackgroundService extends Service {
 
                     addVersionToDb();
                 }else {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        if (Long.parseLong(data.getValue(String.class))>Long.parseLong(new CommonMethods().currentVersionCode()))
+                        if (Long.parseLong(dataSnapshot.child("version_code").getValue(String.class))>Long.parseLong(new CommonMethods().currentVersionCode()))
                         {
                             new CommonMethods().updateMessage();
 
-
-                            break;
-                        }else  if (Long.parseLong(data.getValue(String.class))<Long.parseLong(new CommonMethods().currentVersionCode()))
+                        }else  if (Long.parseLong(dataSnapshot.child("version_code").getValue(String.class))<Long.parseLong(new CommonMethods().currentVersionCode()))
                         {
 
                             addVersionToDb();
-                            break;
+
                         }else {
                             listenUserTracking();
-                            break;
+
                         }
 
-                    }
+
 
                 }
 

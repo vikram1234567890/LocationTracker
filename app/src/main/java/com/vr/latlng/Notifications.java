@@ -1,19 +1,12 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
-import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
-
-import com.facebook.login.widget.LoginButton;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * Created by Admin on 7/19/2018.
@@ -21,7 +14,6 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class Notifications {
     Context context;
-    private String channelId="0";
     String CHANNEL_ID = "my_channel_01";
 
     public Notifications(Context context) {

@@ -1,4 +1,4 @@
-package com.vr.locationtracker;
+package com.vr.latlng;
 
 import android.app.Service;
 import android.content.Context;
@@ -12,8 +12,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import static android.content.ContentValues.TAG;
 
 public class ListenerService extends Service {
     private FirebaseDatabase mFirebaseInstance;
